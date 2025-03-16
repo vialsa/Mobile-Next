@@ -1,0 +1,51 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+  
+  .main {
+    text-align: center;
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .heading {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary);
+    animation: anima 1s ease-in-out;
+  }
+  
+  .text {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    color: var(--foreground);
+    animation: anima 1.5s ease-in-out;
+  }
+
+ 
+  @media (max-width: 768px) {
+    .heading {
+      font-size: 2rem;
+    }
+  
+    .text {
+      font-size: 1rem;
+    }
+  
+  }
+
+  @keyframes anima {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
