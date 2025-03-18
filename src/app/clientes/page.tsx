@@ -3,8 +3,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import styles from "./styles.module.css";
-import { mockClientes } from "../api/mocks/clienteMock";
-import { fetchClientes } from "../api/api";
 
 interface Cliente {
   id_cliente: number;
@@ -21,34 +19,29 @@ const ClientesPage = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchClientes = async () => {
       try {
-        
-
-        /*
-        // site do CETEIA n ta funcionando
-        const data = await fetchClientes(); // Usa a função da API
-        setClientes(data);
-        */
-
-        //mock:
-        setClientes(mockClientes);
-
+        const response = await fetch("/api/cliente");
+        if (!response.ok) {
+          throw new Error("Erro ao buscar clientes.");
+        }
+        const data = await response.json();
+        setClientes(data.clientes);
       } catch (error) {
         setError("Erro ao carregar clientes.");
-        console.error(error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    fetchClientes();
   }, []);
 
   return (
     <div className={styles.container}>
       <Navbar />
       <h1 className={styles.heading}>Lista de Clientes</h1>
+      
       {loading ? (
         <p>Carregando...</p>
       ) : error ? (

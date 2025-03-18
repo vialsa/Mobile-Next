@@ -19,27 +19,22 @@ const VendaPage = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchVendas = async () => {
       try {
-       
-        /*
-        // API:
-        const data = await fetchVendas(); // Usa a função da API
-        setVendas(data);
-        */
-
-        //mock:
-        setVendas(mockVendas);
-
+        const response = await fetch("/api/venda");
+        if (!response.ok) {
+          throw new Error("Erro ao buscar vendas.");
+        }
+        const data = await response.json();
+        setVendas(data.vendas); 
       } catch (error) {
         setError("Erro ao carregar vendas.");
-        console.error(error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    fetchVendas();
   }, []);
 
   return (

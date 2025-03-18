@@ -3,8 +3,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import styles from "./styles.module.css";
-import { mockFornecedores } from "../api/mocks/fornecedoresMock";
-import { fetchFornecedores } from "../api/api";
 
 interface Fornecedor {
   id_fornecedor: number;
@@ -20,33 +18,28 @@ const FornecedorPage = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchFornecedores = async () => {
       try {
+        const response = await fetch("/api/fornecedor");
+        if (!response.ok) throw new Error("Erro ao buscar fornecedores");
         
-
-        /*
-        // Quando o site do CETEIA estiver funcionando, use este código para buscar os dados da API:
-        const data = await fetchFornecedores(); // Usa a função da API
+        const data = await response.json();
         setFornecedores(data);
-        */
-
-        // Enquanto o site do CETEIA está fora do ar, use o mock:
-        setFornecedores(mockFornecedores);
       } catch (error) {
         setError("Erro ao carregar fornecedores.");
-        console.error(error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    fetchFornecedores();
   }, []);
 
   return (
     <div className={styles.container}>
       <Navbar />
       <h1 className={styles.heading}>Lista de Fornecedores</h1>
+
       {loading ? (
         <p>Carregando...</p>
       ) : error ? (
@@ -57,7 +50,7 @@ const FornecedorPage = () => {
         <table className={styles.table}>
           <thead>
             <tr>
-              <th>ID Fornecedor</th>
+              <th>ID</th>
               <th>Nome</th>
               <th>Email</th>
               <th>Telefone</th>

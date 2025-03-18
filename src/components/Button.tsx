@@ -1,32 +1,23 @@
-// src/components/Button.tsx
+"use client";
+
 import React from "react";
 
 interface ButtonProps {
-  type: "submit" | "button";
-  label: string;
-  onClick?: () => void;
+  text: string;
+  onClick: () => void;
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({ type, label, onClick }) => {
+const Button: React.FC<ButtonProps> = ({ text, onClick, type = "button", disabled = false }) => {
   return (
     <button
       type={type}
       onClick={onClick}
-      style={{
-        width: "100%",
-        padding: "12px",
-        backgroundColor: "#4CAF50",
-        color: "white",
-        border: "none",
-        borderRadius: "4px",
-        fontSize: "16px",
-        cursor: "pointer",
-        transition: "background-color 0.3s",
-      }}
-      onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#45a049")}
-      onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#4CAF50")}
+      disabled={disabled}
+      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition"
     >
-      {label}
+      {text}
     </button>
   );
 };

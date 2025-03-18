@@ -18,26 +18,22 @@ const LocalPage = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchLocais = async () => {
       try {
-        /*
-        // API:
-        const data = await fetchLocais(); // Usa a função da API
-        setLocais(data);
-        */
-
-        // mock:
-        setLocais(mockLocais);
-        
+        const response = await fetch("/api/local");
+        if (!response.ok) {
+          throw new Error("Erro ao buscar locais.");
+        }
+        const data = await response.json();
+        setLocais(data.locais); 
       } catch (error) {
         setError("Erro ao carregar locais.");
-        console.error(error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    fetchLocais();
   }, []);
 
   return (

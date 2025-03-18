@@ -21,23 +21,16 @@ const ProdutosPage = () => {
   useEffect(() => {
     const fetchProdutos = async () => {
       try {
-
-        /*
-        // site nao ta funcionando
-        const response = await fetch("http://ceteia.guanambi.ifbaiano.edu.br:15050/api/produtos");
+        
+        const response = await fetch("/api/produto");
         if (!response.ok) {
           throw new Error("Erro ao buscar produtos.");
         }
         const data = await response.json();
-        setProdutos(data.produtos || data);
-        */
-
-        // mockzin
-        setProdutos(mockProduto);
-        //.
+        setProdutos(data.produtos);
+        
       } catch (error) {
         setError("Erro ao carregar produtos.");
-        console.error(error);
       } finally {
         setLoading(false);
       }

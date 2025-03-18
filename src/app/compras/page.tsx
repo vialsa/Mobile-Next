@@ -19,27 +19,22 @@ const ComprasPage = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchCompras = async () => {
       try {
-       
-        /*
-        // buscar os dados da API:
-        const data = await fetchCompras(); // Usa a função da API
-        setCompras(data);
-        */
-
-        //mock:
-        setCompras(mockCompras);
-        
+        const response = await fetch("/api/compras");
+        if (!response.ok) {
+          throw new Error("Erro ao buscar compras.");
+        }
+        const data = await response.json();
+        setCompras(data.compras); // Ajuste conforme a resposta da API
       } catch (error) {
         setError("Erro ao carregar compras.");
-        console.error(error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    fetchCompras();
   }, []);
 
   return (

@@ -41,48 +41,22 @@ const ClassificacaoPage = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchClasificacoes = async () => {
       try {
-        
-
-        /*
-        // site nao ta funcionando
-        const response = await fetch("http://ceteia.guanambi.ifbaiano.edu.br:15050/api/classificacao");
+        const response = await fetch("/api/classificacao");
         if (!response.ok) {
           throw new Error("Erro ao buscar classificações.");
         }
         const data = await response.json();
-        setClassificacoes(data);
-
-        // Para cada classificação, busca o nome do cliente
-        const clientesMap: { [key: number]: string } = {};
-        for (const classificacao of data) {
-          const nomeCliente = await fetchNomeCliente(classificacao.id_cliente);
-          clientesMap[classificacao.id_cliente] = nomeCliente;
-        }
-        setClientes(clientesMap);
-        */
-
-        // mock simualr os nome dos clientes
-        setClassificacoes(mockClassificacao);
-
-       
-        const clientesMap: { [key: number]: string } = {
-          1: "Jojo",
-          2: "PoPO",
-          3: "dasdas",
-        };
-        setClientes(clientesMap);
-        //.
+        setClassificacoes(data.classificacoes);
       } catch (error) {
         setError("Erro ao carregar classificações.");
-        console.error(error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    fetchClasificacoes();
   }, []);
 
   return (
@@ -100,7 +74,7 @@ const ClassificacaoPage = () => {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Cliente</th> {/* Nome do cliente */}
+              <th>Cliente</th> 
               <th>ID Produto</th>
               <th>Nota</th>
               <th>Comentário</th>
@@ -108,16 +82,26 @@ const ClassificacaoPage = () => {
             </tr>
           </thead>
           <tbody>
-            {classificacoes.map((classificacao) => (
+            {classificacoes?.length > 0 ? (
+            classificacoes.map((classificacao) => (
               <tr key={classificacao.id_classificacao}>
                 <td>{classificacao.id_classificacao}</td>
-                <td>{clientes[classificacao.id_cliente] || "Cliente desconhecido"}</td> {/* Exibe o nome do cliente */}
+                <td>{clientes?.[classificacao.id_cliente] || "Cliente desconhecido"}</td>
                 <td>{classificacao.id_produto}</td>
                 <td>{classificacao.nota}</td>
                 <td>{classificacao.comentario}</td>
-                <td>{new Date(classificacao.data_classificacao).toLocaleString()}</td>
+                <td>
+                  {classificacao.data_classificacao
+                    ? new Date(classificacao.data_classificacao).toLocaleString()
+                    : "Data inválida"}
+                </td>
               </tr>
-            ))}
+             ))
+            ) : (
+            <tr>
+              <td colSpan={6} style={{ textAlign: "center" }}>Nenhuma classificação disponível</td>
+            </tr>
+            )}
           </tbody>
         </table>
       )}
